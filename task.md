@@ -19,7 +19,7 @@
 ## 1 Проксирование HTTP запросов – 5 баллов
 
 Должны успешно проксироваться HTTP запросы.
-Команда `curl -x <http://127.0.0.1:8080> <http://mail.ru>` (`8080` – порт, на котором запущена программа) должна возвращать
+Команда `curl -x http://127.0.0.1:8080 http://mail.ru` (`8080` – порт, на котором запущена программа) должна возвращать
 
 ```html
 <html>
@@ -34,7 +34,7 @@
 На вход прокси приходит запрос вида
 
 ```http
-GET <http://mail.ru/> HTTP/1.1
+GET http://mail.ru/ HTTP/1.1
 Host: mail.ru
 User-Agent: curl/7.64.1
 Accept: */*
@@ -64,7 +64,7 @@ Date: Sat, 12 Sep 2020 08:04:13 GMT
 Content-Type: text/html
 Content-Length: 185
 Connection: close
-Location: <https://mail.ru/>
+Location: https://mail.ru/
 ```
 
 ```html

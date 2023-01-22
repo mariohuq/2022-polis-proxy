@@ -16,3 +16,7 @@ For reference:
 - <https://github.com/john-pentest/fproxy> — Node.js
 - <https://github.com/kr/mitm> — Go
 - <https://github.com/zaproxy/zaproxy> — Java
+
+Resources
+
+- [RFC 9112 HTTP/1.1](https://datatracker.ietf.org/doc/html/rfc9112)

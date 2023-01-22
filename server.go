@@ -2,26 +2,35 @@ package main
 
 import (
 	"bufio"
-	"fmt"
+	"log"
 	"net"
 )
 
 func main() {
-	fmt.Println("Launching server...")
-	listener, _ := net.Listen("tcp", ":8081")
+	log.Println("Launching server...")
+	listener, err := net.Listen("tcp", ":8080")
+	if err != nil {
+		log.Fatal("Could not start listener", err)
+	}
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
-			break
+			log.Fatal("Could not accept", err)
 		}
-		buffer := bufio.NewReader(conn)
-		for {
-			message, err := buffer.ReadString('\n')
-			if err != nil {
-				break
-			}
-			fmt.Print("Message Received:|", message, "|")
-			conn.Write([]byte(message))
+		go handle(conn)
+	}
+}
+
+func handle(conn net.Conn) {
+	buffer := bufio.NewReader(conn)
+	message, err := buffer.ReadString('\n')
+
+	for {
+
+		if err != nil {
+			log.Panic("Not ending in a delim: ", err)
 		}
+		log.Println("Message Received:|", message, "|")
+		conn.Write([]byte(message))
 	}
 }

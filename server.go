@@ -1,36 +1,38 @@
 package main
 
 import (
-	"bufio"
 	"log"
-	"net"
+	"net/http"
+	"net/http/httputil"
 )
 
-func main() {
-	log.Println("Launching server...")
-	listener, err := net.Listen("tcp", ":8080")
+func director(req *http.Request) {
+	log.Println("Request:")
+	req.Write(log.Writer())
+}
+
+func modifyResponse(res *http.Response) error {
+	dump, err := httputil.DumpResponse(res, true)
 	if err != nil {
-		log.Fatal("Could not start listener", err)
+		return err
 	}
-	for {
-		conn, err := listener.Accept()
-		if err != nil {
-			log.Fatal("Could not accept", err)
-		}
-		go handle(conn)
+	log.Println("Response:")
+	log.Writer().Write(dump)
+	return nil
+}
+
+func newServer(addr string) http.Server {
+	return http.Server{
+		Handler: &httputil.ReverseProxy{
+			Director:       director,
+			ModifyResponse: modifyResponse,
+		},
+		Addr: addr,
 	}
 }
 
-func handle(conn net.Conn) {
-	buffer := bufio.NewReader(conn)
-	message, err := buffer.ReadString('\n')
-
-	for {
-
-		if err != nil {
-			log.Panic("Not ending in a delim: ", err)
-		}
-		log.Println("Message Received:|", message, "|")
-		conn.Write([]byte(message))
-	}
+func main() {
+	log.Println("Launching server...")
+	proxy := newServer(":8080")
+	log.Println(proxy.ListenAndServe())
 }

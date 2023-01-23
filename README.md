@@ -20,3 +20,11 @@ For reference:
 Resources
 
 - [RFC 9112 HTTP/1.1](https://datatracker.ietf.org/doc/html/rfc9112)
+- [RFC 9293 Transmission Control Protocol (TCP)](https://datatracker.ietf.org/doc/html/rfc9293)
+
+## Usage
+
+1. Start server. `go run .`
+2. Make a request to proxy.
+    - `curl --include --proxy http://127.0.0.1:8080 http://mail.ru`
+    - `curl --include --proxy http://127.0.0.1:8080 http://www.google.com`
